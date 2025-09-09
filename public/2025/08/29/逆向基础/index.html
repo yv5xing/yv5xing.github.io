@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>逆向基础 | speak and act</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="逆向常识 一.  1.cpu寄存器分为哪四大寄存器 2.其中SI,DI通常情况下是存放什么的,SP通常情况下是存放什么的 3.段寄存器又有几种模式,他们的用法相同吗,x32后用什么模式 4.在x32cpu段寄存器的模式对于保护内存做了什么 5.在x32cpu寄存器的保护模式有哪几个管理,;它们的工作原理分别是什么样的 6.请将它转为二进制:0x3b59 7.这是两个段寄存器CS:0x0019  C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向基础">
+<meta property="og:url" content="http://github.com/yv5xing/2025/08/29/%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="speak and act">
+<meta property="og:description" content="逆向常识 一.  1.cpu寄存器分为哪四大寄存器 2.其中SI,DI通常情况下是存放什么的,SP通常情况下是存放什么的 3.段寄存器又有几种模式,他们的用法相同吗,x32后用什么模式 4.在x32cpu段寄存器的模式对于保护内存做了什么 5.在x32cpu寄存器的保护模式有哪几个管理,;它们的工作原理分别是什么样的 6.请将它转为二进制:0x3b59 7.这是两个段寄存器CS:0x0019  C">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-08-28T16:19:43.000Z">
+<meta property="article:modified_time" content="2025-08-28T16:20:17.602Z">
+<meta property="article:author" content="yue ye">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/yv5xing/atom.xml" title="speak and act" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/yv5xing/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/yv5xing/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/yv5xing/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/yv5xing/" id="logo">speak and act</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/yv5xing/" id="subtitle">Slacking off while letting everything go to shit</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/yv5xing/">Home</a>
+        
+          <a class="main-nav-link" href="/yv5xing/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/yv5xing/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://github.com/yv5xing"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-逆向基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/yv5xing/2025/08/29/%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2025-08-28T16:19:43.000Z" itemprop="datePublished">2025-08-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      逆向基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>逆向常识</p>
+<p>一. </p>
+<p>1.cpu寄存器分为哪四大寄存器</p>
+<p>2.其中SI,DI通常情况下是存放什么的,SP通常情况下是存放什么的</p>
+<p>3.段寄存器又有几种模式,他们的用法相同吗,x32后用什么模式</p>
+<p>4.在x32cpu段寄存器的模式对于保护内存做了什么</p>
+<p>5.在x32cpu寄存器的保护模式有哪几个管理,;它们的工作原理分别是什么样的</p>
+<p>6.请将它转为二进制:0x3b59</p>
+<p>7.这是两个段寄存器CS:0x0019  CS:0x002B 分别是第几页的什么表什么权限</p>
+<p>8.请把下述汇编代码翻译成c代码:</p>
+<p>main:</p>
+<p>  push  rbp</p>
+<p>  mov  rbp,rsp</p>
+<p>  mov  DWORD  PTR  [rbp-4],0</p>
+<p>  mov  DWORD  PTR  [rbp-8],0</p>
+<p>  jmp  .L2</p>
+<p>.L3:</p>
+<p>  mov eax,DWORD  PTR</p>
+<p>[rbp-8]</p>
+<p>  add  DWORD  PTR  [rbp-4],eax</p>
+<p>  add DWORD  RTP  [rbp-8],1</p>
+<p>.L2:</p>
+<p>  cmp  DWORD PTR  [rbp-8],9</p>
+<p>  jle  .L3</p>
+<p>  mov  eax,0</p>
+<p>  pop  rbp</p>
+<p>  ret</p>
+<p>9.下列c++代码占用的多少内存大小和内存分布是什么样子的</p>
+<p>class chile{</p>
+<p>public:</p>
+<p>int age;</p>
+<p>char sex;</p>
+<p>char* name;</p>
+<p>};</p>
+<p>10.请恢复出下述汇编代码并转述位c代码</p>
+<p>_a$&#x3D;8</p>
+<p>_b$&#x3D;12</p>
+<p>_add  PROC</p>
+<p> push  ebp</p>
+<p>  mov  ebp,esp</p>
+<p>  mov  eax,DWORD PTR_a$[ebp]</p>
+<p>  imul  eax,DWORD PTR_a$[ebp]</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://github.com/yv5xing/2025/08/29/%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/" data-id="cmf58fnz5000gwgew8vf33khl" data-title="逆向基础" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/yv5xing/2025/08/29/%E7%BF%BB%E8%AF%91%E6%B1%87%E6%80%BB/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          主题设置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/yv5xing/2025/07/30/%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">主题设置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E5%85%B3%E4%BA%8E/" rel="tag">关于</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E5%88%86%E7%B1%BB/" rel="tag">分类</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E5%8F%8B%E8%81%94/" rel="tag">友联</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E5%BD%92%E6%A1%A3/" rel="tag">归档</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E6%9B%B4%E5%A4%9A/" rel="tag">更多</a></li><li class="tag-list-item"><a class="tag-list-link" href="/yv5xing/tags/%E6%A0%87%E7%AD%BE/" rel="tag">标签</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/yv5xing/tags/%E5%85%B3%E4%BA%8E/" style="font-size: 10px;">关于</a> <a href="/yv5xing/tags/%E5%88%86%E7%B1%BB/" style="font-size: 10px;">分类</a> <a href="/yv5xing/tags/%E5%8D%9A%E5%AE%A2/" style="font-size: 10px;">博客</a> <a href="/yv5xing/tags/%E5%8F%8B%E8%81%94/" style="font-size: 10px;">友联</a> <a href="/yv5xing/tags/%E5%BD%92%E6%A1%A3/" style="font-size: 10px;">归档</a> <a href="/yv5xing/tags/%E6%9B%B4%E5%A4%9A/" style="font-size: 10px;">更多</a> <a href="/yv5xing/tags/%E6%A0%87%E7%AD%BE/" style="font-size: 10px;">标签</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/yv5xing/archives/2025/08/">August 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/yv5xing/archives/2025/07/">July 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/yv5xing/2025/08/29/%E7%BF%BB%E8%AF%91%E6%B1%87%E6%80%BB/">主题设置</a>
+          </li>
+        
+          <li>
+            <a href="/yv5xing/2025/08/29/%E9%80%86%E5%90%91%E5%9F%BA%E7%A1%80/">逆向基础</a>
+          </li>
+        
+          <li>
+            <a href="/yv5xing/2025/07/30/%E4%B8%BB%E9%A2%98%E8%AE%BE%E7%BD%AE/">主题设置</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 yue ye<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/yv5xing/" class="mobile-nav-link">Home</a>
+  
+    <a href="/yv5xing/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/yv5xing/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/yv5xing/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/yv5xing/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

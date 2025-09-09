@@ -1,0 +1,20 @@
+# 主题信息
+name: mytheme
+version: 1.0.0
+
+# 外观设置
+scheme: Muse # 可选：Muse Mist Pisces Gemini
+# scheme: Mist
+# scheme: Pisces
+# scheme: Gemini
+
+# 菜单设置
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+  schedule: /schedule/ || fa fa-calendar
+  sitemap: /sitemap.xml || fa fa-sitemap
+  commonweal: /404/ || fa fa-heartbeat
